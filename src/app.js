@@ -76,7 +76,6 @@ const app = async () => {
             }
         }
         catch (err) {
-            console.log(err);
             printMsg(OPERATION_FAILED_MSG);
         }
     

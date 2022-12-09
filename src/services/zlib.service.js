@@ -6,8 +6,10 @@ import { getAbsolutePath } from '../helpers.js';
 
 export const compress = async (currDir, srcFile, dstPath) => {
     const srcFilePath = getAbsolutePath(currDir, srcFile);
-    const dstFilePath = getAbsolutePath(dstPath, `compressed_${path.basename(srcFilePath)}`);
+    let dstFilePath = getAbsolutePath(currDir, dstPath);
     const zip = zlib.createGzip();
+
+    dstFilePath = path.join(dstFilePath, `compressed_${path.basename(srcFilePath)}`);
 
     if (fs.existsSync(srcFilePath)) {
         await pipeline(fs.createReadStream(srcFilePath), zip, fs.createWriteStream(dstFilePath));
@@ -19,8 +21,10 @@ export const compress = async (currDir, srcFile, dstPath) => {
 
 export const decompress = async (currDir, srcFile, dstPath) => {
     const srcFilePath = getAbsolutePath(currDir, srcFile);
-    const dstFilePath = getAbsolutePath(dstPath, `decompressed_${path.basename(srcFilePath)}`);
+    let dstFilePath = getAbsolutePath(currDir, dstPath);
     const unzip = zlib.createGunzip();
+
+    dstFilePath = path.join(dstFilePath, `decompressed_${path.basename(srcFilePath)}`);
 
     if (fs.existsSync(srcFilePath)) {
         await pipeline(fs.createReadStream(srcFilePath), unzip, fs.createWriteStream(dstFilePath));

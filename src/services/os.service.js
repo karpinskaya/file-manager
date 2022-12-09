@@ -1,5 +1,5 @@
 import * as os from 'os';
-import { OS_PARAMS } from './constants.js';
+import { OS_PARAMS } from '../constants.js';
 
 export const osFunc = (param) => {
     if (param === OS_PARAMS.eol) {

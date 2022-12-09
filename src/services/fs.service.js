@@ -46,13 +46,15 @@ export const rn = async (currDir, oldFileName, newFileName) => {
 
 export const cp = async (currDir, srcFile, dstPath) => {
     const srcFilePath = getAbsolutePath(currDir, srcFile);
-    const dstFilePath = getAbsolutePath(dstPath, path.basename(srcFilePath));
+    let dstFilePath = getAbsolutePath(currDir, dstPath);
 
-    try {
+    dstFilePath = path.join(dstFilePath, path.basename(srcFilePath));
+
+    if (fs.existsSync(srcFilePath)) {
         await pipeline(fs.createReadStream(srcFilePath), fs.createWriteStream(dstFilePath));
     }
-    catch (err) {
-        throw err;
+    else {
+        throw new Error();
     }
 };
 

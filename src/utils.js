@@ -48,7 +48,10 @@ export const validateInput = (currDir, input) => {
     if (twoParamsCmd.includes(command) && params.length === 2) {
         const normalizedPath1 = normalizePath(currDir, params[0]);
         const normalizedPath2 = normalizePath(currDir, params[1]);
-        if (existsSync(normalizedPath1) && existsSync(normalizedPath2)) {
+        if (
+            (command === allCommands.rn && existsSync(normalizedPath1)) ||
+            (existsSync(normalizedPath1) && existsSync(normalizedPath2))
+        ) {
             isValidInput = true;
         }
     }

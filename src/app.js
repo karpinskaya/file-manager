@@ -8,6 +8,7 @@ import {
 } from './utils.js';
 import { allCommands, errorMsg } from './constants.js';
 import * as nwdService from './services/nwd.service.js';
+import * as fsService from './services/fs.service.js';
 
 const app = async () => {
     const username =
@@ -47,22 +48,38 @@ const app = async () => {
                         await nwdService.ls(currDir);
                         break;
                     case allCommands.cat:
-                        //
+                        const content = await fsService.cat(
+                            currDir,
+                            cmdObj.params[0]
+                        );
+                        console.log(content);
                         break;
                     case allCommands.add:
-                        //
+                        await fsService.add(currDir, cmdObj.params[0]);
                         break;
                     case allCommands.rn:
-                        //
+                        await fsService.rn(
+                            currDir,
+                            cmdObj.params[0],
+                            cmdObj.params[1]
+                        );
                         break;
                     case allCommands.cp:
-                        //
+                        await fsService.cp(
+                            currDir,
+                            cmdObj.params[0],
+                            cmdObj.params[1]
+                        );
                         break;
                     case allCommands.mv:
-                        //
+                        await fsService.mv(
+                            currDir,
+                            cmdObj.params[0],
+                            cmdObj.params[1]
+                        );
                         break;
                     case allCommands.rm:
-                        //
+                        await fsService.rm(currDir, cmdObj.params[0]);
                         break;
                     case allCommands.os:
                         //
@@ -82,6 +99,7 @@ const app = async () => {
             }
         } catch (e) {
             printErrorMsg(e.message);
+            // console.log(e);
         }
 
         printCurrDir(currDir);

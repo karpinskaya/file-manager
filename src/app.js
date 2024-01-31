@@ -9,6 +9,7 @@ import {
 import { allCommands, errorMsg } from './constants.js';
 import * as nwdService from './services/nwd.service.js';
 import * as fsService from './services/fs.service.js';
+import { osService } from './services/os.service.js';
 
 const app = async () => {
     const username =
@@ -82,7 +83,7 @@ const app = async () => {
                         await fsService.rm(currDir, cmdObj.params[0]);
                         break;
                     case allCommands.os:
-                        //
+                        osService(cmdObj.params[0]);
                         break;
                     case allCommands.hash:
                         //
@@ -99,7 +100,6 @@ const app = async () => {
             }
         } catch (e) {
             printErrorMsg(e.message);
-            // console.log(e);
         }
 
         printCurrDir(currDir);

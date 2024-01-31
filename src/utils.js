@@ -35,7 +35,8 @@ export const validateInput = (currDir, input) => {
 
     if (oneParamCmd.includes(command) && params.length === 1) {
         if (
-            (command === allCommands.os && osParams.includes(params[0])) ||
+            (command === allCommands.os &&
+                Object.values(osParams).includes(params[0])) ||
             command === allCommands.add
         ) {
             isValidInput = true;

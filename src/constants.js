@@ -1,13 +1,14 @@
 export const noParamsCmd = ['up', 'ls'];
 export const oneParamCmd = ['cd', 'cat', 'add', 'rm', 'os', 'hash'];
 export const twoParamsCmd = ['rn', 'cp', 'mv', 'compress', 'decompress'];
-export const osParams = [
-    '--EOL',
-    '--cpus',
-    '--homedir',
-    '--username',
-    '--architecture',
-];
+
+export const osParams = {
+    EOL: '--EOL',
+    cpus: '--cpus',
+    homedir: '--homedir',
+    username: '--username',
+    architecture: '--architecture',
+};
 
 export const allCommands = {
     up: 'up',

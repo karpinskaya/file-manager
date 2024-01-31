@@ -10,6 +10,7 @@ import { allCommands, errorMsg } from './constants.js';
 import * as nwdService from './services/nwd.service.js';
 import * as fsService from './services/fs.service.js';
 import { osService } from './services/os.service.js';
+import { hash } from './services/crypto.service.js';
 
 const app = async () => {
     const username =
@@ -86,7 +87,7 @@ const app = async () => {
                         osService(cmdObj.params[0]);
                         break;
                     case allCommands.hash:
-                        //
+                        await hash(currDir, cmdObj.params[0]);
                         break;
                     case allCommands.compress:
                         //

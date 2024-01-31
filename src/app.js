@@ -11,6 +11,7 @@ import * as nwdService from './services/nwd.service.js';
 import * as fsService from './services/fs.service.js';
 import { osService } from './services/os.service.js';
 import { hash } from './services/crypto.service.js';
+import { compress, decompress } from './services/zlib.service.js';
 
 const app = async () => {
     const username =
@@ -90,17 +91,27 @@ const app = async () => {
                         await hash(currDir, cmdObj.params[0]);
                         break;
                     case allCommands.compress:
-                        //
+                        await compress(
+                            currDir,
+                            cmdObj.params[0],
+                            cmdObj.params[1]
+                        );
                         break;
                     case allCommands.decompress:
-                        //
+                        await decompress(
+                            currDir,
+                            cmdObj.params[0],
+                            cmdObj.params[1]
+                        );
                         break;
                 }
-            } catch {
-                throw new Error(errorMsg.operationFailed);
+            } catch (e) {
+                // throw new Error(errorMsg.operationFailed);
+                throw e;
             }
         } catch (e) {
-            printErrorMsg(e.message);
+            // printErrorMsg(e.message);
+            console.log(e);
         }
 
         printCurrDir(currDir);

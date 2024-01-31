@@ -1,22 +1,26 @@
-export const noParamsCmd = {
-    up: 'up',
-    ls: 'ls',
-};
+export const noParamsCmd = ['up', 'ls'];
+export const oneParamCmd = ['cd', 'cat', 'add', 'rm', 'os', 'hash'];
+export const twoParamsCmd = ['rn', 'cp', 'mv', 'compress', 'decompress'];
+export const osParams = [
+    '--EOL',
+    '--cpus',
+    '--homedir',
+    '--username',
+    '--architecture',
+];
 
-export const oneParamCmd = {
+export const allCommands = {
+    up: 'up',
     cd: 'cd',
     ls: 'ls',
     cat: 'cat',
     add: 'add',
-    rm: 'rm',
-    os: 'os',
-    hash: 'hash',
-};
-
-export const twoParamsCmd = {
     rn: 'rn',
     cp: 'cp',
     mv: 'mv',
+    rm: 'rm',
+    os: 'os',
+    hash: 'hash',
     compress: 'compress',
     decompress: 'decompress',
 };

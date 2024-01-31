@@ -4,14 +4,10 @@ import {
     printGoodbyeMsg,
     printErrorMsg,
     printCurrDir,
-    getCommandWithParams,
+    validateInput,
 } from './utils.js';
-import {
-    noParamsCmd,
-    oneParamCmd,
-    twoParamsCmd,
-    errorMsg,
-} from './constants.js';
+import { allCommands, errorMsg } from './constants.js';
+import * as nwdService from './services/nwd.service.js';
 
 const app = async () => {
     const username =
@@ -29,12 +25,60 @@ const app = async () => {
 
     rl.on('line', async (input) => {
         try {
-            const commandWithParamsObj = getCommandWithParams(input);
+            if (input === '.exit') {
+                rl.close();
+                return;
+            }
+
+            const cmdObj = validateInput(currDir, input);
 
             try {
-                //
+                switch (cmdObj.command) {
+                    case allCommands.up:
+                        currDir = nwdService.up(currDir);
+                        break;
+                    case allCommands.cd:
+                        currDir = await nwdService.cd(
+                            currDir,
+                            cmdObj.params[0]
+                        );
+                        break;
+                    case allCommands.ls:
+                        await nwdService.ls(currDir);
+                        break;
+                    case allCommands.cat:
+                        //
+                        break;
+                    case allCommands.add:
+                        //
+                        break;
+                    case allCommands.rn:
+                        //
+                        break;
+                    case allCommands.cp:
+                        //
+                        break;
+                    case allCommands.mv:
+                        //
+                        break;
+                    case allCommands.rm:
+                        //
+                        break;
+                    case allCommands.os:
+                        //
+                        break;
+                    case allCommands.hash:
+                        //
+                        break;
+                    case allCommands.compress:
+                        //
+                        break;
+                    case allCommands.decompress:
+                        //
+                        break;
+                }
             } catch {
-                // throw new Error(operationFailedMsg);
+                throw new Error(errorMsg.operationFailed);
             }
         } catch (e) {
             printErrorMsg(e.message);

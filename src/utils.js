@@ -1,7 +1,11 @@
+import { existsSync } from 'fs';
+import path from 'path';
 import {
     noParamsCmd,
     oneParamCmd,
     twoParamsCmd,
+    osParams,
+    allCommands,
     errorMsg,
 } from './constants.js';
 
@@ -21,38 +25,44 @@ export const printCurrDir = (currDir) => {
     console.log(`You are currently in ${currDir}`);
 };
 
-export const getCommandWithParams = (input) => {
-    const commandWithParams = input.split(' ');
+export const validateInput = (currDir, input) => {
+    const [command, ...params] = input.split(' ');
+    let isValidInput = false;
 
-    let commandWithParamsObj = {};
-
-    if (
-        commandWithParams.length === 1 &&
-        Object.keys(noParamsCmd).includes(commandWithParams[0])
-    ) {
-        commandWithParamsObj = {
-            command: commandWithParams[0],
-        };
-    } else if (
-        commandWithParams.length === 2 &&
-        Object.keys(oneParamCmd).includes(commandWithParams[0])
-    ) {
-        commandWithParamsObj = {
-            command: commandWithParams[0],
-            param: commandWithParams[1],
-        };
-    } else if (
-        commandWithParams.length === 3 &&
-        Object.keys(twoParamsCmd).includes(commandWithParams[0])
-    ) {
-        commandWithParamsObj = {
-            command: commandWithParams[0],
-            param1: commandWithParams[1],
-            param2: commandWithParams[2],
-        };
-    } else {
-        throw new Error(errorMsg.invalidInput);
+    if (noParamsCmd.includes(command) && params.length === 0) {
+        isValidInput = true;
     }
 
-    return commandWithParamsObj;
+    if (oneParamCmd.includes(command) && params.length === 1) {
+        if (
+            (command === allCommands.os && osParams.includes(params[0])) ||
+            command === allCommands.add
+        ) {
+            isValidInput = true;
+        } else {
+            const normalizedPath = normalizePath(currDir, params[0]);
+            isValidInput = existsSync(normalizedPath);
+        }
+    }
+
+    if (twoParamsCmd.includes(command) && params.length === 2) {
+        const normalizedPath1 = normalizePath(currDir, params[0]);
+        const normalizedPath2 = normalizePath(currDir, params[1]);
+        if (existsSync(normalizedPath1) && existsSync(normalizedPath2)) {
+            isValidInput = true;
+        }
+    }
+
+    if (!isValidInput) {
+        throw new Error(errorMsg.invalidInput);
+    } else {
+        return { command, params };
+    }
+};
+
+export const normalizePath = (currentPath, targetPath) => {
+    const normalizedPath = path.isAbsolute(targetPath)
+        ? targetPath
+        : path.resolve(currentPath, targetPath);
+    return normalizedPath;
 };
